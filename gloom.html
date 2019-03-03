@@ -9,22 +9,26 @@
 <body>
     <div style="display:flex;">
         <div>Scenario</div>
-        <input type="number" onkeydown="getScenario(this)">
+        <input type="number" id="scenarioId" onkeydown="getScenario()">
     </div>
     <div style="display:flex;">
         <div>Level</div>
-        <input type="number" id="level" value="0">
+        <input type="number" id="levelId" value="0" onkeydown="getScenario()">
     </div>
 </body>
 <script>
-    function getScenario(element) {
+    function getScenario() {
         if(event.key === 'Enter') {
-            scenario = element.value;
-            scenarioLevel = document.getElementById("level").value;
-            element.value = "";
+            scenario = document.getElementById("scenarioId").value;
+            document.getElementById("scenarioId").value = "";
+
+            scenarioLevel = document.getElementById("levelId").value;
+
             console.log(scenario);
             console.log(SCENARIO_DEFINITIONS[scenario]);
+
             for(i = 0; i < SCENARIO_DEFINITIONS[scenario].decks.length; i++) {
+                console.log(SCENARIO_DEFINITIONS[scenario].decks[i].name);
                 console.log(MONSTER_STATS.monsters[SCENARIO_DEFINITIONS[scenario].decks[i].name].level[scenarioLevel]);
             }
         }

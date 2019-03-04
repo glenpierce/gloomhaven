@@ -16,12 +16,17 @@
         <div>Level</div>
         <input type="number" id="levelId" value="0" onkeydown="getScenario()">
     </div>
+    <div>
+        <button onclick="draw()">Draw</button>
+    </div>
 
-    <div style="display: flex;" id="monsters">
+    <div style="display: flex; flex-direction: column;" id="monsters">
 
     </div>
 </body>
 <script>
+    var monsters = [];
+
     function getScenario() {
         if(event.key === 'Enter') {
             scenario = document.getElementById("scenarioId").value - 1;
@@ -33,17 +38,55 @@
             console.log(SCENARIO_DEFINITIONS[scenario]);
 
             for(i = 0; i < SCENARIO_DEFINITIONS[scenario].decks.length; i++) {
-                console.log(SCENARIO_DEFINITIONS[scenario].decks[i].name);
-                console.log(MONSTER_STATS.monsters[SCENARIO_DEFINITIONS[scenario].decks[i].name].level[scenarioLevel]);
-                let image = document.createElement("IMG");
-                image.src = "./images/monster-images/" + SCENARIO_DEFINITIONS[scenario].decks[i].image;
-                document.getElementById("monsters").appendChild(image);
+                let monster = {};
+
+                monster.name = SCENARIO_DEFINITIONS[scenario].decks[i].name;
+                monster.stats = MONSTER_STATS.monsters[SCENARIO_DEFINITIONS[scenario].decks[i].name].level[scenarioLevel];
+
+                monster.div = document.createElement("DIV");
+                monster.div.style = "display:flex; justify-content:space-between;";
+                monster.image = document.createElement("IMG");
+                monster.image.style = "width:fit-content; height:fit-content;";
+                monster.image.src = "./images/monster-images/" + SCENARIO_DEFINITIONS[scenario].decks[i].image;
+                monster.div.appendChild(monster.image);
+                document.getElementById("monsters").appendChild(monster.div);
+
+                monster.deck = [];
                 for(k = 0; k < MONSTER_ABILITY_CARDS.length; k++) {
                     if(MONSTER_ABILITY_CARDS[k].deck == SCENARIO_DEFINITIONS[scenario].decks[i].deck_name)
-                        console.log(MONSTER_ABILITY_CARDS[k]);
+                        monster.deck.push(MONSTER_ABILITY_CARDS[k]);
                 }
+                monster.deck.pop();
+                shuffle(monster.deck);
+                monsters.push(monster);
             }
         }
     }
+
+    function draw() {
+        for(monster in monsters) {
+            let oldCard = monsters[monster].div.childNodes;
+            if(oldCard.length > 1) {
+                monsters[monster].div.removeChild(monsters[monster].div.childNodes[1]);
+            }
+            let card = monsters[monster].deck[Math.floor(Math.random() * monsters[monster].deck.length)];
+            card.imageElement = document.createElement("IMG");
+            card.imageElement.src = "./images/" + card.image;
+            monsters[monster].div.appendChild(card.imageElement);
+        }
+    }
+
+    function shuffle(array) {
+        var currentIndex = array.length;
+        var temporaryValue, randomIndex;
+        while (0 !== currentIndex) {
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex -= 1;
+            temporaryValue = array[currentIndex];
+            array[currentIndex] = array[randomIndex];
+            array[randomIndex] = temporaryValue;
+        }
+        return array;
+    };
 </script>
 </html>

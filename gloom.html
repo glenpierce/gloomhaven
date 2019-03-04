@@ -3,6 +3,7 @@
 <head>
     <script type="text/javascript" src="./data/scenarios.js"></script>
     <script type="text/javascript" src="./data/monster_stats.js"></script>
+    <script type="text/javascript" src="./data/monster-ability-cards.js"></script>
     <meta charset="UTF-8">
     <title>Gloomhaven DM</title>
 </head>
@@ -15,11 +16,15 @@
         <div>Level</div>
         <input type="number" id="levelId" value="0" onkeydown="getScenario()">
     </div>
+
+    <div style="display: flex;" id="monsters">
+
+    </div>
 </body>
 <script>
     function getScenario() {
         if(event.key === 'Enter') {
-            scenario = document.getElementById("scenarioId").value;
+            scenario = document.getElementById("scenarioId").value - 1;
             document.getElementById("scenarioId").value = "";
 
             scenarioLevel = document.getElementById("levelId").value;
@@ -30,6 +35,13 @@
             for(i = 0; i < SCENARIO_DEFINITIONS[scenario].decks.length; i++) {
                 console.log(SCENARIO_DEFINITIONS[scenario].decks[i].name);
                 console.log(MONSTER_STATS.monsters[SCENARIO_DEFINITIONS[scenario].decks[i].name].level[scenarioLevel]);
+                let image = document.createElement("IMG");
+                image.src = "./images/monster-images/" + SCENARIO_DEFINITIONS[scenario].decks[i].image;
+                document.getElementById("monsters").appendChild(image);
+                for(k = 0; k < MONSTER_ABILITY_CARDS.length; k++) {
+                    if(MONSTER_ABILITY_CARDS[k].deck == SCENARIO_DEFINITIONS[scenario].decks[i].deck_name)
+                        console.log(MONSTER_ABILITY_CARDS[k]);
+                }
             }
         }
     }

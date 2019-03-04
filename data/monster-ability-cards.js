@@ -1,4 +1,4 @@
-[
+MONSTER_ABILITY_CARDS = [
   {
     "name": "ma-aa-1",
     "points": 0,

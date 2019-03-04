@@ -64,13 +64,15 @@
     }
 
     function draw() {
+        let oldCards = document.getElementsByClassName("card");
+        while(oldCards[0]) {
+            oldCards[0].parentNode.removeChild(oldCards[0]);
+        }
+
         for(monster in monsters) {
-            let oldCard = monsters[monster].div.childNodes;
-            if(oldCard.length > 1) {
-                monsters[monster].div.removeChild(monsters[monster].div.childNodes[1]);
-            }
             let card = monsters[monster].deck[Math.floor(Math.random() * monsters[monster].deck.length)];
             card.imageElement = document.createElement("IMG");
+            card.imageElement.className = "card";
             card.imageElement.src = "./images/" + card.image;
             monsters[monster].div.appendChild(card.imageElement);
         }
@@ -87,6 +89,6 @@
             array[randomIndex] = temporaryValue;
         }
         return array;
-    };
+    }
 </script>
 </html>

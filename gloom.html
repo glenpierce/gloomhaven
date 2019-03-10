@@ -31,11 +31,7 @@
         if(event.key === 'Enter') {
             scenario = document.getElementById("scenarioId").value - 1;
             document.getElementById("scenarioId").value = "";
-
             scenarioLevel = document.getElementById("levelId").value;
-
-            console.log(scenario);
-            console.log(SCENARIO_DEFINITIONS[scenario]);
 
             for(i = 0; i < SCENARIO_DEFINITIONS[scenario].decks.length; i++) {
                 let monster = {};
@@ -45,10 +41,17 @@
 
                 monster.div = document.createElement("DIV");
                 monster.div.style = "display:flex; justify-content:space-between;";
+
                 monster.image = document.createElement("IMG");
                 monster.image.style = "width:fit-content; height:fit-content;";
                 monster.image.src = "./images/monster-images/" + SCENARIO_DEFINITIONS[scenario].decks[i].image;
                 monster.div.appendChild(monster.image);
+                monster.image.onclick = function() { addNewMonster(monster); };
+
+                monster.list = document.createElement("DIV");
+                monster.list.style = "flex-grow:1; display:flex;";
+                monster.div.appendChild(monster.list);
+
                 document.getElementById("monsters").appendChild(monster.div);
 
                 monster.deck = [];
@@ -61,6 +64,32 @@
                 monsters.push(monster);
             }
         }
+    }
+
+    function addNewMonster(monster) {
+        let newMonster = document.createElement("DIV");
+
+        let newMonsterImage = document.createElement("IMG");
+        newMonsterImage.style = "width:fit-content; height:fit-content;";
+        newMonsterImage.src = monster.image.src;
+        newMonster.appendChild(newMonsterImage);
+
+        if(newMonster.elite) {
+            newMonster.stats = monster.stats.elite;
+        } else {
+            newMonster.stats = monster.stats.normal;
+        }
+        if (newMonster.stats == null) {
+            newMonster.stats = monster.stats;
+        }
+
+        let newMonsterAttack = document.createElement("DIV");
+        newMonsterAttack.style = "position:relative;";
+        newMonsterAttack.innerText = newMonster.stats.attack;
+        newMonster.appendChild(newMonsterAttack);
+
+        monster.list.appendChild(newMonster);
+        console.log(monster);
     }
 
     function draw() {

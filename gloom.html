@@ -3,7 +3,7 @@
 <head>
     <script type="text/javascript" src="./data/scenarios.js"></script>
     <script type="text/javascript" src="./data/monster_stats.js"></script>
-    <script type="text/javascript" src="./data/monster-ability-cards.js"></script>
+    <script type="text/javascript" src="./data/cards.js"></script>
     <meta charset="UTF-8">
     <title>Gloomhaven DM</title>
 </head>
@@ -69,13 +69,13 @@
                 document.getElementById("monsters").appendChild(monster.div);
 
                 monster.deck = [];
-                for(k = 0; k < MONSTER_ABILITY_CARDS.length; k++) {
-                    if(MONSTER_ABILITY_CARDS[k].deck == SCENARIO_DEFINITIONS[scenario].decks[i].deck_name)
-                        monster.deck.push(MONSTER_ABILITY_CARDS[k]);
+                for(k = 0; k < DECK_DEFINITONS.length; k++) {
+                    if(DECK_DEFINITONS[k].class == SCENARIO_DEFINITIONS[scenario].decks[i].deck_name)
+                        monster.deck = DECK_DEFINITONS[k].cards;
                 }
-                monster.deck.pop();
                 shuffle(monster.deck);
                 monsters.push(monster);
+                console.log(monster);
             }
         }
     }
@@ -151,14 +151,16 @@
         statsBlock.appendChild(newMonsterRange);
 
         let newMonsterAttributes = document.createElement("DIV");
-        if(newMonster.stats.attributes.length < 1) {
-            console.log("newMonster.stats.attributes.length < 1");
-            newMonsterAttributes.innerText = '\xA0';
-        } else {
-            console.log("newMonster.stats.attributes.length > 0");
+        if(newMonster.stats.attributes != null && newMonster.stats.attributes.length > 0) {
             newMonsterAttributes.innerText = newMonster.stats.attributes;
         }
         statsBlock.appendChild(newMonsterAttributes);
+
+        let newMonsterImmunities = document.createElement("DIV");
+        if(newMonster.stats.immunities != null && newMonster.stats.immunities.length > 0) {
+            newMonsterImmunities.innerText = newMonster.stats.immunities;
+        }
+        statsBlock.appendChild(newMonsterImmunities);
 
         newMonster.appendChild(statsBlock);
 
@@ -174,10 +176,11 @@
 
         for(monster in monsters) {
             let card = monsters[monster].deck[Math.floor(Math.random() * monsters[monster].deck.length)];
-            card.imageElement = document.createElement("IMG");
-            card.imageElement.className = "card";
-            card.imageElement.src = "./images/" + card.image;
-            monsters[monster].div.appendChild(card.imageElement);
+            let cardElement = document.createElement("DIV");
+            cardElement.className = "card";
+            cardElement.innerText = card;
+            monsters[monster].div.appendChild(cardElement);
+            createCard(card);
         }
     }
 
@@ -192,6 +195,19 @@
             array[randomIndex] = temporaryValue;
         }
         return array;
+    }
+
+    function createCard(data) {
+        let card = document.createElement("DIV");
+        card.style = "position:relative;";
+        let cardData = {};
+        cardData.shuffle = data[0];
+        cardData.initiative = data[1];
+        cardData.cardText = [];
+        while(data.length > 2) {
+            cardData.cardText.push(data.pop());
+        }
+        console.log(cardData);
     }
 </script>
 </html>

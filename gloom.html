@@ -45,8 +45,13 @@
                 monster.image = document.createElement("IMG");
                 monster.image.style = "width:fit-content; height:fit-content;";
                 monster.image.src = "./images/monster-images/" + SCENARIO_DEFINITIONS[scenario].decks[i].image;
-                monster.div.appendChild(monster.image);
-                monster.image.onclick = function() { addNewMonster(monster); };
+
+                let name = document.createElement("DIV");
+                name.innerText = monster.name;
+                name.style = "writing-mode:vertical-rl; transform:rotate(180deg); margin:10px; cursor:pointer;";
+                name.height = name.width;
+                monster.div.appendChild(name);
+                name.onclick = function() { addNewMonster(monster); };
 
                 monster.list = document.createElement("DIV");
                 monster.list.style = "flex-grow:1; display:flex;";
@@ -68,6 +73,7 @@
 
     function addNewMonster(monster) {
         let newMonster = document.createElement("DIV");
+        newMonster.style = "position:relative;";
 
         let newMonsterImage = document.createElement("IMG");
         newMonsterImage.style = "width:fit-content; height:fit-content;";
@@ -84,7 +90,7 @@
         }
 
         let newMonsterAttack = document.createElement("DIV");
-        newMonsterAttack.style = "position:relative;";
+        newMonsterAttack.style = "position:absolute; top:0; color:black; font-weight:700;";
         newMonsterAttack.innerText = newMonster.stats.attack;
         newMonster.appendChild(newMonsterAttack);
 

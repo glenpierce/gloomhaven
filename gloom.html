@@ -106,7 +106,14 @@
         statsBlock.style = "position:absolute; top:0; padding:5px;";
 
         let newMonsterHealth = document.createElement("DIV");
-        newMonsterHealth.innerText = newMonster.stats.health;
+        newMonsterHealth.style = "display:flex;";
+        let healthIcon = document.createElement("IMG");
+        healthIcon.style = "height:20px; width:20px;";
+        healthIcon.src = "./icons/heal.svg";
+        newMonsterHealth.appendChild(healthIcon);
+        let healthValue = document.createElement("DIV");
+        healthValue.innerText = newMonster.stats.health;
+        newMonsterHealth.appendChild(healthValue);
         statsBlock.appendChild(newMonsterHealth);
 
         let newMonsterMove = document.createElement("DIV");
@@ -133,7 +140,14 @@
         statsBlock.appendChild(newMonsterAttack);
 
         let newMonsterRange = document.createElement("DIV");
-        newMonsterRange.innerText = newMonster.stats.range;
+        newMonsterRange.style = "display:flex;";
+        let rangeIcon = document.createElement("IMG");
+        rangeIcon.style = "height:20px; width:20px;";
+        rangeIcon.src = "./icons/range.svg";
+        newMonsterRange.appendChild(rangeIcon);
+        let rangeValue = document.createElement("DIV");
+        rangeValue.innerText = newMonster.stats.attack;
+        newMonsterRange.appendChild(rangeValue);
         statsBlock.appendChild(newMonsterRange);
 
         let newMonsterAttributes = document.createElement("DIV");

@@ -7,14 +7,16 @@
     <meta charset="UTF-8">
     <title>Gloomhaven DM</title>
 </head>
-<body>
-    <div style="display:flex;">
-        <div>Scenario</div>
-        <input type="number" id="scenarioId" onkeydown="getScenario()">
-    </div>
-    <div style="display:flex;">
-        <div>Level</div>
-        <input type="number" id="levelId" value="0" onkeydown="getScenario()">
+<body style="background-color: black; font-family: 'Poppins', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight:600; color:white;">
+    <div style="width:300px;">
+        <div style="display:flex; width: 100%;">
+            <div>Scenario</div>
+            <input style="margin-left:20px; flex-grow: 1;" type="number" id="scenarioId" onkeydown="getScenario()">
+        </div>
+        <div style="display:flex;">
+            <div>Level</div>
+            <input style="margin-left:20px; flex-grow: 1;" type="number" id="levelId" value="0" onkeydown="getScenario()">
+        </div>
     </div>
     <div>
         <button onclick="draw()">Draw</button>
@@ -26,6 +28,7 @@
 </body>
 <script>
     var monsters = [];
+    var activeMonsters = [];
 
     function getScenario() {
         if(event.key === 'Enter') {
@@ -79,14 +82,14 @@
 
     function addNewMonster(monster, isElite) {
         let newMonster = document.createElement("DIV");
-        if(isElite) {
-            newMonster.style = "position:relative; border: solid yellow; border-radius:2px;";
-        } else {
-            newMonster.style = "position:relative;";
-        }
+        newMonster.style = "position:relative;";
 
         let newMonsterImage = document.createElement("IMG");
-        newMonsterImage.style = "width:fit-content; height:fit-content;";
+        if(isElite) {
+            newMonsterImage.style = "width:fit-content; height:fit-content; border:solid yellow; border-radius:2px;";
+        } else {
+            newMonsterImage.style = "width:fit-content; height:fit-content;";
+        }
         newMonsterImage.src = monster.image.src;
         newMonster.appendChild(newMonsterImage);
 
@@ -100,27 +103,48 @@
         }
 
         let statsBlock = document.createElement("DIV");
-        statsBlock.style = "position:absolute; top:0;";
-
-        let newMonsterAttack = document.createElement("DIV");
-        newMonsterAttack.innerText = newMonster.stats.attack;
-        statsBlock.appendChild(newMonsterAttack);
-
-        let newMonsterAttributes = document.createElement("DIV");
-        newMonsterAttributes.innerText = newMonster.stats.attributes;
-        statsBlock.appendChild(newMonsterAttributes);
+        statsBlock.style = "position:absolute; top:0; padding:5px;";
 
         let newMonsterHealth = document.createElement("DIV");
         newMonsterHealth.innerText = newMonster.stats.health;
         statsBlock.appendChild(newMonsterHealth);
 
+        let newMonsterMove = document.createElement("DIV");
+        newMonsterMove.style = "display:flex;";
+        let moveIcon = document.createElement("IMG");
+        moveIcon.style = "height:20px; width:20px;";
+        moveIcon.src = "./icons/move.svg";
+        newMonsterMove.appendChild(moveIcon);
+        let moveValue = document.createElement("DIV");
+        moveValue.innerText = newMonster.stats.attack;
+        newMonsterMove.appendChild(moveValue);
+        statsBlock.appendChild(newMonsterMove);
+
+
+        let newMonsterAttack = document.createElement("DIV");
+        newMonsterAttack.style = "display:flex;";
+        let attackIcon = document.createElement("IMG");
+        attackIcon.style = "height:20px; width:20px;";
+        attackIcon.src = "./icons/attack.svg";
+        newMonsterAttack.appendChild(attackIcon);
+        let attackValue = document.createElement("DIV");
+        attackValue.innerText = newMonster.stats.attack;
+        newMonsterAttack.appendChild(attackValue);
+        statsBlock.appendChild(newMonsterAttack);
+
         let newMonsterRange = document.createElement("DIV");
         newMonsterRange.innerText = newMonster.stats.range;
         statsBlock.appendChild(newMonsterRange);
 
-        let newMonsterMove = document.createElement("DIV");
-        newMonsterMove.innerText = newMonster.stats.move;
-        statsBlock.appendChild(newMonsterMove);
+        let newMonsterAttributes = document.createElement("DIV");
+        if(newMonster.stats.attributes.length < 1) {
+            console.log("newMonster.stats.attributes.length < 1");
+            newMonsterAttributes.innerText = '\xA0';
+        } else {
+            console.log("newMonster.stats.attributes.length > 0");
+            newMonsterAttributes.innerText = newMonster.stats.attributes;
+        }
+        statsBlock.appendChild(newMonsterAttributes);
 
         newMonster.appendChild(statsBlock);
 

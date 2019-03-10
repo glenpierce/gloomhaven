@@ -49,9 +49,15 @@
                 let name = document.createElement("DIV");
                 name.innerText = monster.name;
                 name.style = "writing-mode:vertical-rl; transform:rotate(180deg); margin:10px; cursor:pointer;";
-                name.height = name.width;
                 monster.div.appendChild(name);
-                name.onclick = function() { addNewMonster(monster); };
+                name.onclick = function() { addNewMonster(monster, false); };
+                if(monster.stats.elite) {
+                    let elite = document.createElement("DIV");
+                    elite.innerText = "elite";
+                    elite.style = "writing-mode:vertical-rl; transform:rotate(180deg); margin:10px; cursor:pointer;";
+                    monster.div.appendChild(elite);
+                    elite.onclick = function() { addNewMonster(monster, true); };
+                }
 
                 monster.list = document.createElement("DIV");
                 monster.list.style = "flex-grow:1; display:flex;";
@@ -71,16 +77,20 @@
         }
     }
 
-    function addNewMonster(monster) {
+    function addNewMonster(monster, isElite) {
         let newMonster = document.createElement("DIV");
-        newMonster.style = "position:relative;";
+        if(isElite) {
+            newMonster.style = "position:relative; border: solid yellow; border-radius:2px;";
+        } else {
+            newMonster.style = "position:relative;";
+        }
 
         let newMonsterImage = document.createElement("IMG");
         newMonsterImage.style = "width:fit-content; height:fit-content;";
         newMonsterImage.src = monster.image.src;
         newMonster.appendChild(newMonsterImage);
 
-        if(newMonster.elite) {
+        if(isElite) {
             newMonster.stats = monster.stats.elite;
         } else {
             newMonster.stats = monster.stats.normal;
@@ -89,10 +99,30 @@
             newMonster.stats = monster.stats;
         }
 
+        let statsBlock = document.createElement("DIV");
+        statsBlock.style = "position:absolute; top:0;";
+
         let newMonsterAttack = document.createElement("DIV");
-        newMonsterAttack.style = "position:absolute; top:0; color:black; font-weight:700;";
         newMonsterAttack.innerText = newMonster.stats.attack;
-        newMonster.appendChild(newMonsterAttack);
+        statsBlock.appendChild(newMonsterAttack);
+
+        let newMonsterAttributes = document.createElement("DIV");
+        newMonsterAttributes.innerText = newMonster.stats.attributes;
+        statsBlock.appendChild(newMonsterAttributes);
+
+        let newMonsterHealth = document.createElement("DIV");
+        newMonsterHealth.innerText = newMonster.stats.health;
+        statsBlock.appendChild(newMonsterHealth);
+
+        let newMonsterRange = document.createElement("DIV");
+        newMonsterRange.innerText = newMonster.stats.range;
+        statsBlock.appendChild(newMonsterRange);
+
+        let newMonsterMove = document.createElement("DIV");
+        newMonsterMove.innerText = newMonster.stats.move;
+        statsBlock.appendChild(newMonsterMove);
+
+        newMonster.appendChild(statsBlock);
 
         monster.list.appendChild(newMonster);
         console.log(monster);

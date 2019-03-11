@@ -46,8 +46,8 @@
             <img src="./characters/Tinkerer.png" id= "TK" height="80px" width="60px" draggable="true" ondragstart="drag(event)">
         </div>
     </div>
-    <div>
-        <button onclick="draw()">Draw</button>
+    <div style="display:flex;">
+        <img style="height:50px; width:50px; cursor:pointer;" src="./icons/cardsDrawIcon.svg" onclick="draw()"/>
     </div>
 
     <div style="display: flex; flex-direction: column;" id="monsters">
@@ -56,6 +56,7 @@
 </body>
 <script>
     let monsters = [];
+    let characters = [];
 
     function getScenario() {
         if(event.key === 'Enter') {
@@ -77,20 +78,24 @@
                 monster.image.src = "./images/monster-images/" + SCENARIO_DEFINITIONS[scenario].decks[i].image;
 
                 let name = document.createElement("DIV");
-                name.innerText = monster.name;
+                name.innerText = "+ " + monster.name;
                 name.style.cssText = "writing-mode:vertical-rl; transform:rotate(180deg); margin:10px; cursor:pointer;";
                 monster.div.appendChild(name);
                 name.onclick = function() { addNewMonster(monster, false); };
                 if(monster.stats.elite) {
                     let elite = document.createElement("DIV");
-                    elite.innerText = "elite";
-                    elite.style.cssText = "writing-mode:vertical-rl; transform:rotate(180deg); margin:10px; cursor:pointer;";
+                    elite.innerText = "+ elite";
+                    elite.style.cssText = "writing-mode:vertical-rl; transform:rotate(180deg); margin:10px 10px 10px 0px; cursor:pointer; color:#DAA520;";
                     monster.div.appendChild(elite);
                     elite.onclick = function() { addNewMonster(monster, true); };
+                } else {
+                    let eliteSpace = document.createElement("DIV");
+                    eliteSpace.style.cssText = "margin:14px;";
+                    monster.div.appendChild(eliteSpace);
                 }
 
                 monster.list = document.createElement("DIV");
-                monster.list.style.cssText = "flex-grow:1; display:flex;";
+                monster.list.style.cssText = "flex-grow:1; display:flex; margin-top:20px;";
                 monster.div.appendChild(monster.list);
 
                 document.getElementById("monsters").appendChild(monster.div);
@@ -108,13 +113,13 @@
 
     function addNewMonster(monster, isElite) {
         let newMonster = document.createElement("DIV");
-        newMonster.style.cssText = "position:relative;";
+        newMonster.style.cssText = "position:relative; margin-right:15px;";
 
         let newMonsterImage = document.createElement("IMG");
         if(isElite) {
-            newMonsterImage.style.cssText = "width:fit-content; height:fit-content; border:solid yellow; border-radius:2px;";
+            newMonsterImage.style.cssText = "width:fit-content; height:fit-content; border:solid #DAA520 8px; border-radius:2px; padding:3px;";
         } else {
-            newMonsterImage.style.cssText = "width:fit-content; height:fit-content;";
+            newMonsterImage.style.cssText = "width:fit-content; height:fit-content; border:solid #666060 8px; padding:3px;";
         }
         newMonsterImage.src = monster.image.src;
         newMonster.appendChild(newMonsterImage);
@@ -127,54 +132,60 @@
         if (newMonster.stats == null) {
             newMonster.stats = JSON.parse(JSON.stringify(monster.stats));
         }
-        // if(newMonster.stats.health) {
-        //
-        // }
+
+        if(typeof newMonster.stats.health == "string" && newMonster.stats.health.includes('C')) {
+            console.log(parseInt(newMonster.stats.health));
+            newMonster.stats.health = parseInt(newMonster.stats.health) * characters.length;
+        }
 
         let statsBlock = document.createElement("DIV");
-        statsBlock.style.cssText = "position:absolute; top:0; padding:5px;";
+        statsBlock.style.cssText = "position:absolute; top:0; left:6px; padding:5px;";
 
         let newMonsterHealth = document.createElement("DIV");
         newMonsterHealth.style.cssText = "display:flex;";
         let healthIcon = document.createElement("IMG");
-        healthIcon.style.cssText = "height:20px; width:20px;";
+        healthIcon.style.cssText = "height:30px; width:30px; margin-bottom:10px; align-self:flex-end; padding-bottom:13px;";
         healthIcon.src = "./icons/heal.svg";
         newMonsterHealth.appendChild(healthIcon);
         let healthValue = document.createElement("DIV");
+        healthValue.style.cssText = "font-size:80px";
         healthValue.innerText = newMonster.stats.health;
         newMonsterHealth.appendChild(healthValue);
         statsBlock.appendChild(newMonsterHealth);
 
         let newMonsterMove = document.createElement("DIV");
-        newMonsterMove.style.cssText = "display:flex;";
+        newMonsterMove.style.cssText = "display:flex; margin-left:5px;";
         let moveIcon = document.createElement("IMG");
-        moveIcon.style.cssText = "height:20px; width:20px;";
+        moveIcon.style.cssText = "height:30px; width:30px; align-self:center;";
         moveIcon.src = "./icons/move.svg";
         newMonsterMove.appendChild(moveIcon);
         let moveValue = document.createElement("DIV");
+        moveValue.style.cssText = "font-size:40px; margin-left:5px;";
         moveValue.innerText = newMonster.stats.attack;
         newMonsterMove.appendChild(moveValue);
         statsBlock.appendChild(newMonsterMove);
 
 
         let newMonsterAttack = document.createElement("DIV");
-        newMonsterAttack.style.cssText = "display:flex;";
+        newMonsterAttack.style.cssText = "display:flex; margin-left:5px;";
         let attackIcon = document.createElement("IMG");
-        attackIcon.style.cssText = "height:20px; width:20px;";
+        attackIcon.style.cssText = "height:30px; width:30px; align-self:center;";
         attackIcon.src = "./icons/attack.svg";
         newMonsterAttack.appendChild(attackIcon);
         let attackValue = document.createElement("DIV");
+        attackValue.style.cssText = "font-size:40px; margin-left:5px;";
         attackValue.innerText = newMonster.stats.attack;
         newMonsterAttack.appendChild(attackValue);
         statsBlock.appendChild(newMonsterAttack);
 
         let newMonsterRange = document.createElement("DIV");
-        newMonsterRange.style.cssText = "display:flex;";
+        newMonsterRange.style.cssText = "display:flex; margin-left:5px;";
         let rangeIcon = document.createElement("IMG");
-        rangeIcon.style.cssText = "height:20px; width:20px;";
+        rangeIcon.style.cssText = "height:30px; width:30px; align-self:center;";
         rangeIcon.src = "./icons/range.svg";
         newMonsterRange.appendChild(rangeIcon);
         let rangeValue = document.createElement("DIV");
+        rangeValue.style.cssText = "font-size:40px; margin-left:5px;";
         rangeValue.innerText = newMonster.stats.attack;
         newMonsterRange.appendChild(rangeValue);
         statsBlock.appendChild(newMonsterRange);

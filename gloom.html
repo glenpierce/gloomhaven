@@ -9,14 +9,41 @@
     <title>Gloomhaven DM</title>
 </head>
 <body style="background-color: black; font-family: 'Poppins', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight:600; color:white;">
-    <div style="width:300px;">
-        <div style="display:flex; width: 100%;">
-            <div>Scenario</div>
-            <input style="margin-left:20px; flex-grow: 1;" type="number" id="scenarioId" onkeydown="getScenario()">
+    <div style="display:flex;">
+        <div style="width:300px;">
+            <div style="display:flex; width: 100%;">
+                <div>Scenario</div>
+                <input style="margin-left:20px; flex-grow: 1;" type="number" id="scenarioId" onkeydown="getScenario()">
+            </div>
+            <div style="display:flex;">
+                <div>Level</div>
+                <input style="margin-left:20px; flex-grow: 1;" type="number" id="levelId" value="0" onkeydown="getScenario()">
+            </div>
         </div>
-        <div style="display:flex;">
-            <div>Level</div>
-            <input style="margin-left:20px; flex-grow: 1;" type="number" id="levelId" value="0" onkeydown="getScenario()">
+        <div style="margin:10px;">
+            Characters
+            <div style="display:flex;">
+                <div style="height:80px; width:60px; border: solid grey; border-radius:2px;"></div>
+                <input style="margin-left:20px; flex-grow:1; outline:none; background-color:grey; border:solid; cursor:pointer; align-self:center;" id="character1">
+            </div>
+            <div style="display:flex;">
+                <div style="height:80px; width:60px; border: solid grey; border-radius:2px;"></div>
+                <input style="margin-left:20px; flex-grow:1; outline:none; background-color:grey; border:solid; cursor:pointer; align-self:center;" id="character2">
+            </div>
+            <div style="display:flex;">
+                <div style="height:80px; width:60px; border: solid grey; border-radius:2px;"></div>
+                <input style="margin-left:20px; flex-grow:1; outline:none; background-color:grey; border:solid; cursor:pointer; align-self:center;" id="character3">
+            </div>
+            <div style="display:flex;">
+                <div style="height:80px; width:60px; border: solid grey; border-radius:2px;"></div>
+                <input style="margin-left:20px; flex-grow:1; outline:none; background-color:grey; border:solid; cursor:pointer; align-self:center;" id="character4">
+            </div>
+        </div>
+        <div>
+            <img src="./characters/Mindthief.png" height="80px" width="60px">
+            <img src="./characters/Cragheart.png" height="80px" width="60px">
+            <img src="./characters/Scoundrel.png" height="80px" width="60px">
+            <img src="./characters/Tinkerer.png" height="80px" width="60px">
         </div>
     </div>
     <div>
@@ -94,13 +121,15 @@
 
         if(isElite) {
             newMonster.stats = JSON.parse(JSON.stringify(monster.stats.elite));
-        } else {
+        } else if (monster.stats.normal != null) {
             newMonster.stats = JSON.parse(JSON.stringify(monster.stats.normal));
         }
         if (newMonster.stats == null) {
             newMonster.stats = JSON.parse(JSON.stringify(monster.stats));
         }
-        console.log(newMonster.stats);
+        // if(newMonster.stats.health) {
+        //
+        // }
 
         let statsBlock = document.createElement("DIV");
         statsBlock.style.cssText = "position:absolute; top:0; padding:5px;";

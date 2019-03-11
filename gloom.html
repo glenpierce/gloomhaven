@@ -75,7 +75,6 @@
                 }
                 shuffle(monster.deck);
                 monsters.push(monster);
-                console.log(monster);
             }
         }
     }
@@ -165,7 +164,6 @@
         newMonster.appendChild(statsBlock);
 
         monster.list.appendChild(newMonster);
-        console.log(monster);
     }
 
     function draw() {
@@ -174,14 +172,12 @@
             oldCards[0].parentNode.removeChild(oldCards[0]);
         }
 
-        for(monster in monsters) {
+        for(let monster in monsters) {
             let card = monsters[monster].deck[Math.floor(Math.random() * monsters[monster].deck.length)];
             let cardElement = document.createElement("DIV");
             cardElement.className = "card";
-            console.log(card.toString());
             cardElement.innerHTML = parseString(card.toString());
             monsters[monster].div.appendChild(cardElement);
-            createCard(card);
         }
     }
 
@@ -206,7 +202,6 @@
         cardData.initiative = data[1];
         cardData.cardText = [];
         cardData.cardText = parseString(data);
-        console.log(cardData);
     }
 
     function expand_macro(macro) {
@@ -222,7 +217,6 @@
         let result = "";
         if(string != null) {
             if(Array.isArray(string)) {
-                console.log(string);
                 for (let i = 0; i < string.length; i++) {
                     if(string[i] != null && string[i].replace != null) {
                         result += string[i].replace(/%[^%]*%/gi, expand_macro);
@@ -233,6 +227,9 @@
             }
         }
         result = result.replace(/\*/g, "");
+        result = result.replace(/,/g, "<br>");
+        result = result.replace(/true/, "");
+        result = result.replace(/false/, "");
         return result;
     }
 </script>

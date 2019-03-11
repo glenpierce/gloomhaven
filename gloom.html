@@ -93,13 +93,14 @@
         newMonster.appendChild(newMonsterImage);
 
         if(isElite) {
-            newMonster.stats = monster.stats.elite;
+            newMonster.stats = JSON.parse(JSON.stringify(monster.stats.elite));
         } else {
-            newMonster.stats = monster.stats.normal;
+            newMonster.stats = JSON.parse(JSON.stringify(monster.stats.normal));
         }
         if (newMonster.stats == null) {
-            newMonster.stats = monster.stats;
+            newMonster.stats = JSON.parse(JSON.stringify(monster.stats));
         }
+        console.log(newMonster.stats);
 
         let statsBlock = document.createElement("DIV");
         statsBlock.style.cssText = "position:absolute; top:0; padding:5px;";
@@ -151,17 +152,31 @@
 
         let newMonsterAttributes = document.createElement("DIV");
         if(newMonster.stats.attributes != null && newMonster.stats.attributes.length > 0) {
-            newMonsterAttributes.innerText = newMonster.stats.attributes;
+            newMonsterAttributes.innerHTML = "Attributes: " + parseString(newMonster.stats.attributes);
         }
         statsBlock.appendChild(newMonsterAttributes);
 
         let newMonsterImmunities = document.createElement("DIV");
         if(newMonster.stats.immunities != null && newMonster.stats.immunities.length > 0) {
-            newMonsterImmunities.innerText = newMonster.stats.immunities;
+            newMonsterImmunities.innerHTML = "Immunities: " + parseString(newMonster.stats.immunities);
         }
         statsBlock.appendChild(newMonsterImmunities);
 
         newMonster.appendChild(statsBlock);
+
+        newMonster.onclick = function() {
+            newMonster.stats.health--;
+            healthValue.innerText = newMonster.stats.health;
+            if(newMonster.stats.health < 1) {
+                newMonster.parentNode.removeChild(newMonster);
+            }
+        };
+
+        newMonster.oncontextmenu = function() {
+            newMonster.stats.health++;
+            healthValue.innerText = newMonster.stats.health;
+            return false;
+        };
 
         monster.list.appendChild(newMonster);
     }
@@ -173,11 +188,14 @@
         }
 
         for(let monster in monsters) {
-            let card = monsters[monster].deck[Math.floor(Math.random() * monsters[monster].deck.length)];
-            let cardElement = document.createElement("DIV");
-            cardElement.className = "card";
-            cardElement.innerHTML = parseString(card.toString());
-            monsters[monster].div.appendChild(cardElement);
+            if(true) {
+                let card = monsters[monster].deck[Math.floor(Math.random() * monsters[monster].deck.length)];
+                let cardElement = document.createElement("DIV");
+                cardElement.className = "card";
+                cardElement.innerHTML = parseString(card.toString());
+                monsters[monster].div.appendChild(cardElement);
+                monsters[monster].div.style.order = card[1];
+            }
         }
     }
 

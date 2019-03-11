@@ -9,17 +9,25 @@
     <title>Gloomhaven DM</title>
 </head>
 <body style="background-color: black; font-family: 'Poppins', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight:600; color:white;">
-    <div style="display:flex;">
-        <div style="width:300px;">
-            <div style="display:flex; width: 100%;">
-                <div>Scenario</div>
-                <input style="margin-left:20px; flex-grow: 1;" type="number" id="scenarioId" onkeydown="getScenario()">
+    <div style="display:flex; justify-content:space-between;">
+        <div style="display:flex;">
+            <div style="display:flex;">
+                <input style="margin-right:10px; width:60px; outline:none; background-color:grey; border:solid; text-align:center; font-size:40px;" id="levelId" value="0" onkeydown="getScenario()">
+                <div id="lvl" style="margin-right:20px; font-size:50px;">lvl</div>
             </div>
             <div style="display:flex;">
-                <div>Level</div>
-                <input style="margin-left:20px; flex-grow: 1;" type="number" id="levelId" value="0" onkeydown="getScenario()">
+                <input style="font-size:40px; outline:none; background-color:grey; border:solid; text-align:center; margin-right:10px; width:60px;" id="scenarioId" onkeydown="getScenario()">
+                <div id="scenarioName" style="font-size:50px;">Scenario</div>
             </div>
         </div>
+        <div>
+            Round counter
+            <div style="display:flex;">
+                <img style="height:50px; width:50px; cursor:pointer;" src="./icons/cardsDrawIcon.svg" onclick="draw()"/>
+            </div>
+        </div>
+    </div>
+    <div style="display:flex;">
         <div style="margin:10px;">
             Characters
             <div style="display:flex;">
@@ -46,9 +54,6 @@
             <img src="./characters/Tinkerer.png" id= "TK" height="80px" width="60px" draggable="true" ondragstart="drag(event)">
         </div>
     </div>
-    <div style="display:flex;">
-        <img style="height:50px; width:50px; cursor:pointer;" src="./icons/cardsDrawIcon.svg" onclick="draw()"/>
-    </div>
 
     <div style="display: flex; flex-direction: column;" id="monsters">
 
@@ -56,13 +61,16 @@
 </body>
 <script>
     let monsters = [];
-    let characters = [];
+    let characters = [1,2,3,4];
 
     function getScenario() {
         if(event.key === 'Enter') {
             let scenario = document.getElementById("scenarioId").value - 1;
-            document.getElementById("scenarioId").value = "";
+            document.getElementById("scenarioId").parentNode.removeChild(document.getElementById("scenarioId"));
             let scenarioLevel = document.getElementById("levelId").value;
+            document.getElementById("levelId").parentNode.removeChild(document.getElementById("levelId"));
+            document.getElementById("scenarioName").innerText = SCENARIO_DEFINITIONS[scenario].name;
+            document.getElementById("lvl").innerText = scenarioLevel + " lvl";
 
             for(let i = 0; i < SCENARIO_DEFINITIONS[scenario].decks.length; i++) {
                 let monster = {};

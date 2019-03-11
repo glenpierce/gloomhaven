@@ -206,9 +206,7 @@
         cardData.shuffle = data[0];
         cardData.initiative = data[1];
         cardData.cardText = [];
-        while(data.length > 2) {
-            cardData.cardText.push(parseString(data.pop()));
-        }
+        cardData.cardText = parseString(data);
         console.log(cardData);
     }
 
@@ -222,11 +220,20 @@
     }
 
     function parseString(string) {
+        let result = "";
         if(string != null) {
-            return string.replace(/%[^%]*%/gi, expand_macro);
-        } else {
-            return "";
+            if(Array.isArray(string)) {
+                console.log(string);
+                for (let i = 0; i < string.length; i++) {
+                    if(string[i] != null && string[i].replace != null) {
+                        result += string[i].replace(/%[^%]*%/gi, expand_macro);
+                    }
+                }
+            } else {
+                result = string.replace(/%[^%]*%/gi, expand_macro);
+            }
         }
+        return result;
     }
 </script>
 </html>

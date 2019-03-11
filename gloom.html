@@ -28,49 +28,48 @@
     </div>
 </body>
 <script>
-    var monsters = [];
-    var activeMonsters = [];
+    let monsters = [];
 
     function getScenario() {
         if(event.key === 'Enter') {
-            scenario = document.getElementById("scenarioId").value - 1;
+            let scenario = document.getElementById("scenarioId").value - 1;
             document.getElementById("scenarioId").value = "";
-            scenarioLevel = document.getElementById("levelId").value;
+            let scenarioLevel = document.getElementById("levelId").value;
 
-            for(i = 0; i < SCENARIO_DEFINITIONS[scenario].decks.length; i++) {
+            for(let i = 0; i < SCENARIO_DEFINITIONS[scenario].decks.length; i++) {
                 let monster = {};
 
                 monster.name = SCENARIO_DEFINITIONS[scenario].decks[i].name;
                 monster.stats = MONSTER_STATS.monsters[SCENARIO_DEFINITIONS[scenario].decks[i].name].level[scenarioLevel];
 
                 monster.div = document.createElement("DIV");
-                monster.div.style = "display:flex; justify-content:space-between;";
+                monster.div.style.cssText = "display:flex; justify-content:space-between;";
 
                 monster.image = document.createElement("IMG");
-                monster.image.style = "width:fit-content; height:fit-content;";
+                monster.image.style.cssText = "width:fit-content; height:fit-content;";
                 monster.image.src = "./images/monster-images/" + SCENARIO_DEFINITIONS[scenario].decks[i].image;
 
                 let name = document.createElement("DIV");
                 name.innerText = monster.name;
-                name.style = "writing-mode:vertical-rl; transform:rotate(180deg); margin:10px; cursor:pointer;";
+                name.style.cssText = "writing-mode:vertical-rl; transform:rotate(180deg); margin:10px; cursor:pointer;";
                 monster.div.appendChild(name);
                 name.onclick = function() { addNewMonster(monster, false); };
                 if(monster.stats.elite) {
                     let elite = document.createElement("DIV");
                     elite.innerText = "elite";
-                    elite.style = "writing-mode:vertical-rl; transform:rotate(180deg); margin:10px; cursor:pointer;";
+                    elite.style.cssText = "writing-mode:vertical-rl; transform:rotate(180deg); margin:10px; cursor:pointer;";
                     monster.div.appendChild(elite);
                     elite.onclick = function() { addNewMonster(monster, true); };
                 }
 
                 monster.list = document.createElement("DIV");
-                monster.list.style = "flex-grow:1; display:flex;";
+                monster.list.style.cssText = "flex-grow:1; display:flex;";
                 monster.div.appendChild(monster.list);
 
                 document.getElementById("monsters").appendChild(monster.div);
 
                 monster.deck = [];
-                for(k = 0; k < DECK_DEFINITONS.length; k++) {
+                for(let k = 0; k < DECK_DEFINITONS.length; k++) {
                     if(DECK_DEFINITONS[k].class == SCENARIO_DEFINITIONS[scenario].decks[i].deck_name)
                         monster.deck = DECK_DEFINITONS[k].cards;
                 }
@@ -83,13 +82,13 @@
 
     function addNewMonster(monster, isElite) {
         let newMonster = document.createElement("DIV");
-        newMonster.style = "position:relative;";
+        newMonster.style.cssText = "position:relative;";
 
         let newMonsterImage = document.createElement("IMG");
         if(isElite) {
-            newMonsterImage.style = "width:fit-content; height:fit-content; border:solid yellow; border-radius:2px;";
+            newMonsterImage.style.cssText = "width:fit-content; height:fit-content; border:solid yellow; border-radius:2px;";
         } else {
-            newMonsterImage.style = "width:fit-content; height:fit-content;";
+            newMonsterImage.style.cssText = "width:fit-content; height:fit-content;";
         }
         newMonsterImage.src = monster.image.src;
         newMonster.appendChild(newMonsterImage);
@@ -104,12 +103,12 @@
         }
 
         let statsBlock = document.createElement("DIV");
-        statsBlock.style = "position:absolute; top:0; padding:5px;";
+        statsBlock.style.cssText = "position:absolute; top:0; padding:5px;";
 
         let newMonsterHealth = document.createElement("DIV");
-        newMonsterHealth.style = "display:flex;";
+        newMonsterHealth.style.cssText = "display:flex;";
         let healthIcon = document.createElement("IMG");
-        healthIcon.style = "height:20px; width:20px;";
+        healthIcon.style.cssText = "height:20px; width:20px;";
         healthIcon.src = "./icons/heal.svg";
         newMonsterHealth.appendChild(healthIcon);
         let healthValue = document.createElement("DIV");
@@ -118,9 +117,9 @@
         statsBlock.appendChild(newMonsterHealth);
 
         let newMonsterMove = document.createElement("DIV");
-        newMonsterMove.style = "display:flex;";
+        newMonsterMove.style.cssText = "display:flex;";
         let moveIcon = document.createElement("IMG");
-        moveIcon.style = "height:20px; width:20px;";
+        moveIcon.style.cssText = "height:20px; width:20px;";
         moveIcon.src = "./icons/move.svg";
         newMonsterMove.appendChild(moveIcon);
         let moveValue = document.createElement("DIV");
@@ -130,9 +129,9 @@
 
 
         let newMonsterAttack = document.createElement("DIV");
-        newMonsterAttack.style = "display:flex;";
+        newMonsterAttack.style.cssText = "display:flex;";
         let attackIcon = document.createElement("IMG");
-        attackIcon.style = "height:20px; width:20px;";
+        attackIcon.style.cssText = "height:20px; width:20px;";
         attackIcon.src = "./icons/attack.svg";
         newMonsterAttack.appendChild(attackIcon);
         let attackValue = document.createElement("DIV");
@@ -141,9 +140,9 @@
         statsBlock.appendChild(newMonsterAttack);
 
         let newMonsterRange = document.createElement("DIV");
-        newMonsterRange.style = "display:flex;";
+        newMonsterRange.style.cssText = "display:flex;";
         let rangeIcon = document.createElement("IMG");
-        rangeIcon.style = "height:20px; width:20px;";
+        rangeIcon.style.cssText = "height:20px; width:20px;";
         rangeIcon.src = "./icons/range.svg";
         newMonsterRange.appendChild(rangeIcon);
         let rangeValue = document.createElement("DIV");
@@ -187,8 +186,8 @@
     }
 
     function shuffle(array) {
-        var currentIndex = array.length;
-        var temporaryValue, randomIndex;
+        let currentIndex = array.length;
+        let temporaryValue, randomIndex;
         while (0 !== currentIndex) {
             randomIndex = Math.floor(Math.random() * currentIndex);
             currentIndex -= 1;
@@ -201,7 +200,7 @@
 
     function createCard(data) {
         let card = document.createElement("DIV");
-        card.style = "position:relative;";
+        card.style.cssText = "position:relative;";
         let cardData = {};
         cardData.shuffle = data[0];
         cardData.initiative = data[1];
@@ -233,6 +232,7 @@
                 result = string.replace(/%[^%]*%/gi, expand_macro);
             }
         }
+        result = result.replace(/\*/g, "");
         return result;
     }
 </script>

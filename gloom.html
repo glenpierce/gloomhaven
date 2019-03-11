@@ -23,27 +23,27 @@
         <div style="margin:10px;">
             Characters
             <div style="display:flex;">
-                <div style="height:80px; width:60px; border: solid grey; border-radius:2px;"></div>
+                <div style="height:80px; width:60px; border: solid grey; border-radius:2px;" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
                 <input style="margin-left:20px; flex-grow:1; outline:none; background-color:grey; border:solid; cursor:pointer; align-self:center;" id="character1">
             </div>
             <div style="display:flex;">
-                <div style="height:80px; width:60px; border: solid grey; border-radius:2px;"></div>
+                <div style="height:80px; width:60px; border: solid grey; border-radius:2px;" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
                 <input style="margin-left:20px; flex-grow:1; outline:none; background-color:grey; border:solid; cursor:pointer; align-self:center;" id="character2">
             </div>
             <div style="display:flex;">
-                <div style="height:80px; width:60px; border: solid grey; border-radius:2px;"></div>
+                <div style="height:80px; width:60px; border: solid grey; border-radius:2px;" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
                 <input style="margin-left:20px; flex-grow:1; outline:none; background-color:grey; border:solid; cursor:pointer; align-self:center;" id="character3">
             </div>
             <div style="display:flex;">
-                <div style="height:80px; width:60px; border: solid grey; border-radius:2px;"></div>
+                <div style="height:80px; width:60px; border: solid grey; border-radius:2px;" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
                 <input style="margin-left:20px; flex-grow:1; outline:none; background-color:grey; border:solid; cursor:pointer; align-self:center;" id="character4">
             </div>
         </div>
         <div>
-            <img src="./characters/Mindthief.png" height="80px" width="60px">
-            <img src="./characters/Cragheart.png" height="80px" width="60px">
-            <img src="./characters/Scoundrel.png" height="80px" width="60px">
-            <img src="./characters/Tinkerer.png" height="80px" width="60px">
+            <img src="./characters/Mindthief.png" id="MH" height="80px" width="60px" draggable="true" ondragstart="drag(event)">
+            <img src="./characters/Cragheart.png" id="CH" height="80px" width="60px" draggable="true" ondragstart="drag(event)">
+            <img src="./characters/Scoundrel.png" id="SC" height="80px" width="60px" draggable="true" ondragstart="drag(event)">
+            <img src="./characters/Tinkerer.png" id= "TK" height="80px" width="60px" draggable="true" ondragstart="drag(event)">
         </div>
     </div>
     <div>
@@ -278,6 +278,20 @@
         result = result.replace(/true/, "");
         result = result.replace(/false/, "");
         return result;
+    }
+
+    function allowDrop(event) {
+        event.preventDefault();
+    }
+
+    function drag(event) {
+        event.dataTransfer.setData("text", event.target.id);
+    }
+
+    function drop(event) {
+        event.preventDefault();
+        let data = event.dataTransfer.getData("text");
+        event.target.appendChild(document.getElementById(data));
     }
 </script>
 </html>

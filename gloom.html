@@ -4,6 +4,7 @@
     <script type="text/javascript" src="./data/scenarios.js"></script>
     <script type="text/javascript" src="./data/monster_stats.js"></script>
     <script type="text/javascript" src="./data/cards.js"></script>
+    <script type="text/javascript" src="./data/macros.js"></script>
     <meta charset="UTF-8">
     <title>Gloomhaven DM</title>
 </head>
@@ -178,7 +179,8 @@
             let card = monsters[monster].deck[Math.floor(Math.random() * monsters[monster].deck.length)];
             let cardElement = document.createElement("DIV");
             cardElement.className = "card";
-            cardElement.innerText = card;
+            console.log(card.toString());
+            cardElement.innerHTML = parseString(card.toString());
             monsters[monster].div.appendChild(cardElement);
             createCard(card);
         }
@@ -205,9 +207,26 @@
         cardData.initiative = data[1];
         cardData.cardText = [];
         while(data.length > 2) {
-            cardData.cardText.push(data.pop());
+            cardData.cardText.push(parseString(data.pop()));
         }
         console.log(cardData);
+    }
+
+    function expand_macro(macro) {
+        let key = macro.toLowerCase();
+        if (key in MACROS) {
+            return MACROS[key];
+        } else {
+            return macro;
+        }
+    }
+
+    function parseString(string) {
+        if(string != null) {
+            return string.replace(/%[^%]*%/gi, expand_macro);
+        } else {
+            return "";
+        }
     }
 </script>
 </html>

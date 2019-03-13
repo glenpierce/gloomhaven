@@ -7,6 +7,20 @@
     <script type="text/javascript" src="./data/macros.js"></script>
     <meta charset="UTF-8">
     <title>Gloomhaven DM</title>
+    <style>
+        .card {
+            background-image: url(./icons/card.jpg);
+            width: 160px;
+            height: 260px;
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .card br {
+            line-height: 1.5;
+        }
+    </style>
 </head>
 <body style="background-color: black; font-family: 'Poppins', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight:600; color:white;">
     <div style="display:flex; justify-content:space-between;">
@@ -23,12 +37,12 @@
         <img src="./images/gloomhavenLogo.jpg" height="50px" width="300px">
         <div>
             <div id="roundCounter"> Round counter </div>
-            <div style="display:flex;">
+            <div style="display:flex; justify-content:flex-end;">
                 <img style="height:50px; width:50px; cursor:pointer;" src="./icons/cardsDrawIcon.svg" onclick="draw()"/>
             </div>
         </div>
     </div>
-    <div style="display:flex;">
+    <div style="display:none;">
         <div style="margin:10px;">
             Characters
             <div style="display:flex;">
@@ -56,14 +70,28 @@
         </div>
     </div>
 
-    <div style="display: flex; flex-direction: column;" id="monsters">
+    <div style="display:flex;">
+        <div id="initTower" style=" display:flex; flex-direction:column;">Init tower</div>
+        <div style="display: flex; flex-direction: column; flex-grow:1;" id="monsters">
+    </div>
 
     </div>
 </body>
 <script>
+
+    window.onload = function() {
+        if(getCharacters()) {
+            console.log(getCharacters());
+            document.getElementById("levelId").value = getCharacters().level;
+            for(let i = 0; i < getCharacters().characters.length; i++) {
+                document.getElementById("initTower").appendChild(document.getElementById(getCharacters().portraits[i]))
+            }
+        }
+    };
+
     let monsters = [];
     let activeMonsters = [];
-    let characters = [1,2,3,4];
+    let characters = getCharacters().characters;
     let roundCount = 0;
 
     function getScenario() {
@@ -251,12 +279,10 @@
         for(let monster in monsters) {
             for(let activeMonster in activeMonsters) {
                 if (activeMonsters[activeMonster].name == monsters[monster].name) {
-                    let card = monsters[monster].deck[Math.floor(Math.random() * monsters[monster].deck.length)];
-                    let cardElement = document.createElement("DIV");
-                    cardElement.className = "card";
-                    cardElement.innerHTML = parseString(card.toString());
+                    let cardData = monsters[monster].deck[Math.floor(Math.random() * monsters[monster].deck.length)];
+                    let cardElement = createCard(cardData);
                     monsters[monster].div.appendChild(cardElement);
-                    monsters[monster].div.style.order = card[1];
+                    monsters[monster].div.style.order = cardData[1];
                     break;
                 } else {
                     monsters[monster].div.style.order = 100;
@@ -278,14 +304,15 @@
         return array;
     }
 
-    function createCard(data) {
-        let card = document.createElement("DIV");
-        card.style.cssText = "position:relative;";
-        let cardData = {};
-        cardData.shuffle = data[0];
-        cardData.initiative = data[1];
-        cardData.cardText = [];
-        cardData.cardText = parseString(data);
+    function createCard(cardData) {
+
+        let cardText = document.createElement("DIV");
+        cardText.innerHTML = parseString(cardData.toString());
+        cardText.className = "card";
+
+        // cardData.shuffle = data[0];
+        // cardData.initiative = data[1];
+        return cardText;
     }
 
     function expand_macro(macro) {
@@ -314,6 +341,7 @@
         result = result.replace(/,/g, "<br>");
         result = result.replace(/true/, "");
         result = result.replace(/false/, "");
+        result = result.replace(/<br>/, "");
         return result;
     }
 
@@ -329,6 +357,19 @@
         event.preventDefault();
         let data = event.dataTransfer.getData("text");
         event.target.appendChild(document.getElementById(data));
+    }
+
+    function getCharacters() {
+        let characters = JSON.parse(localStorage.getItem('characters'));
+        if(characters == null) {
+            characters = {
+                "level": 2,
+                "characters": ["Xavier", "Jen", "Amanda", "Tim"],
+                "portraits":["MH", "SC", "CH", "TK"]
+            };
+            localStorage.setItem('characters', JSON.stringify(characters));
+        }
+        return characters;
     }
 </script>
 </html>

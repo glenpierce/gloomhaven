@@ -58,7 +58,7 @@ DECK_DEFINITONS =
             , [false, "44", "* %move% -1", "* %attack% +1", "** %range% +0"]
             , [false, "56", "* %attack% -1", "** %range% +0", "** %target% 2"]
             , [true,  "68", "* %attack% +1", "** %range% +1"]
-            , [false, "14", "* %move% -1", "* %attack% -1", , "** %range% +0", "* <span class='small'> Create a 3 damage trap in an adjacent empty hex closest to an enemy </span>"]
+            , [false, "14", "* %move% -1", "* %attack% -1", "** %range% +0", "* <span class='small'> Create a 3 damage trap in an adjacent empty hex closest to an enemy </span>"]
             , [true,  "29", "* %move% +0", "* %attack% -1", "** %range% +1", "** %immobilize%"]
             ]
         },

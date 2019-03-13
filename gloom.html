@@ -20,8 +20,9 @@
                 <div id="scenarioName" style="font-size:50px;">Scenario</div>
             </div>
         </div>
+        <img src="./images/gloomhavenLogo.jpg" height="50px" width="300px">
         <div>
-            Round counter
+            <div id="roundCounter"> Round counter </div>
             <div style="display:flex;">
                 <img style="height:50px; width:50px; cursor:pointer;" src="./icons/cardsDrawIcon.svg" onclick="draw()"/>
             </div>
@@ -61,7 +62,9 @@
 </body>
 <script>
     let monsters = [];
+    let activeMonsters = [];
     let characters = [1,2,3,4];
+    let roundCount = 0;
 
     function getScenario() {
         if(event.key === 'Enter') {
@@ -122,6 +125,7 @@
     function addNewMonster(monster, isElite) {
         let newMonster = document.createElement("DIV");
         newMonster.style.cssText = "position:relative; margin-right:15px;";
+        newMonster.name = monster.name;
 
         let newMonsterImage = document.createElement("IMG");
         if(isElite) {
@@ -217,6 +221,11 @@
             healthValue.innerText = newMonster.stats.health;
             if(newMonster.stats.health < 1) {
                 newMonster.parentNode.removeChild(newMonster);
+                let removedMonsterIndex = activeMonsters.indexOf(newMonster);
+                if(removedMonsterIndex > -1) {
+                    activeMonsters.splice(removedMonsterIndex);
+                }
+
             }
         };
 
@@ -226,23 +235,32 @@
             return false;
         };
 
+        activeMonsters.push(newMonster);
+
         monster.list.appendChild(newMonster);
     }
 
     function draw() {
+        roundCount++;
+        document.getElementById("roundCounter").innerText = "Round " + roundCount;
         let oldCards = document.getElementsByClassName("card");
         while(oldCards[0]) {
             oldCards[0].parentNode.removeChild(oldCards[0]);
         }
 
         for(let monster in monsters) {
-            if(true) {
-                let card = monsters[monster].deck[Math.floor(Math.random() * monsters[monster].deck.length)];
-                let cardElement = document.createElement("DIV");
-                cardElement.className = "card";
-                cardElement.innerHTML = parseString(card.toString());
-                monsters[monster].div.appendChild(cardElement);
-                monsters[monster].div.style.order = card[1];
+            for(let activeMonster in activeMonsters) {
+                if (activeMonsters[activeMonster].name == monsters[monster].name) {
+                    let card = monsters[monster].deck[Math.floor(Math.random() * monsters[monster].deck.length)];
+                    let cardElement = document.createElement("DIV");
+                    cardElement.className = "card";
+                    cardElement.innerHTML = parseString(card.toString());
+                    monsters[monster].div.appendChild(cardElement);
+                    monsters[monster].div.style.order = card[1];
+                    break;
+                } else {
+                    monsters[monster].div.style.order = 100;
+                }
             }
         }
     }

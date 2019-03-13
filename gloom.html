@@ -15,6 +15,7 @@
             border-radius: 15px;
             padding: 20px;
             margin-top: 20px;
+            align-self: center;
         }
 
         .card br {
@@ -65,10 +66,10 @@
             </div>
         </div>
         <div>
-            <img src="./characters/Mindthief.png" id="MH" height="80px" width="60px" draggable="true" ondragstart="drag(event)" class="portraits">
-            <img src="./characters/Cragheart.png" id="CH" height="80px" width="60px" draggable="true" ondragstart="drag(event)" class="portraits">
-            <img src="./characters/Scoundrel.png" id="SC" height="80px" width="60px" draggable="true" ondragstart="drag(event)" class="portraits">
-            <img src="./characters/Tinkerer.png" id= "TK" height="80px" width="60px" draggable="true" ondragstart="drag(event)" class="portraits">
+            <img src="./characters/Mindthief.png" id="MH" height="80px" width="60px" draggable="true" onclick="assignInit(this)" ondragstart="drag(event)" class="portraits">
+            <img src="./characters/Cragheart.png" id="CH" height="80px" width="60px" draggable="true" onclick="assignInit(this)" ondragstart="drag(event)" class="portraits">
+            <img src="./characters/Scoundrel.png" id="SC" height="80px" width="60px" draggable="true" onclick="assignInit(this)" ondragstart="drag(event)" class="portraits">
+            <img src="./characters/Tinkerer.png" id= "TK" height="80px" width="60px" draggable="true" onclick="assignInit(this)" ondragstart="drag(event)" class="portraits">
         </div>
     </div>
 
@@ -284,6 +285,14 @@
             oldCards[0].parentNode.removeChild(oldCards[0]);
         }
 
+        let initTower = document.getElementById("initTower");
+
+        for(let i = 1; i < initTower.childNodes.length; i++) {
+            if(!initTower.childNodes[i].classList.contains("portraits")) {
+                initTower.removeChild(initTower.childNodes[i]);
+            }
+        }
+
         for(let monster in monsters) {
             for(let activeMonster in activeMonsters) {
                 if (activeMonsters[activeMonster].name == monsters[monster].name) {
@@ -291,6 +300,7 @@
                     let cardElement = createCard(cardData);
                     monsters[monster].div.appendChild(cardElement);
                     monsters[monster].div.style.order = cardData[1];
+                    addMonsterToInitTower(activeMonsters[activeMonster].name, cardData[1]);
                     break;
                 } else {
                     monsters[monster].div.style.order = 100;
@@ -366,6 +376,19 @@
         event.preventDefault();
         let data = event.dataTransfer.getData("text");
         event.target.appendChild(document.getElementById(data));
+    }
+
+    function assignInit(element) {
+        let init = window.prompt(element.id, element.style.order);
+        element.style.order = init;
+    }
+
+    function addMonsterToInitTower(name, init) {
+        let initTower = document.getElementById("initTower");
+        let monsterInitChit = document.createElement("DIV");
+        monsterInitChit.innerText = name;
+        monsterInitChit.style.order = init;
+        initTower.appendChild(monsterInitChit);
     }
 
     function getCharacters() {

@@ -20,6 +20,10 @@
         .card br {
             line-height: 1.5;
         }
+
+        .portraits {
+            padding: 20px 40px 10px 40px;
+        }
     </style>
 </head>
 <body style="background-color: black; font-family: 'Poppins', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight:600; color:white;">
@@ -35,11 +39,9 @@
             </div>
         </div>
         <img src="./images/gloomhavenLogo.jpg" height="50px" width="300px">
-        <div>
-            <div id="roundCounter"> Round counter </div>
-            <div style="display:flex; justify-content:flex-end;">
-                <img style="height:50px; width:50px; cursor:pointer;" src="./icons/cardsDrawIcon.svg" onclick="draw()"/>
-            </div>
+        <img style="height:50px; width:50px; cursor:pointer;" src="./icons/cardsDrawIcon.svg" onclick="draw()"/>
+        <div id="roundData" style="font-size:18px; line-height:1.4;">
+            <div id="roundCounter"> Round 0 </div>
         </div>
     </div>
     <div style="display:none;">
@@ -63,15 +65,15 @@
             </div>
         </div>
         <div>
-            <img src="./characters/Mindthief.png" id="MH" height="80px" width="60px" draggable="true" ondragstart="drag(event)">
-            <img src="./characters/Cragheart.png" id="CH" height="80px" width="60px" draggable="true" ondragstart="drag(event)">
-            <img src="./characters/Scoundrel.png" id="SC" height="80px" width="60px" draggable="true" ondragstart="drag(event)">
-            <img src="./characters/Tinkerer.png" id= "TK" height="80px" width="60px" draggable="true" ondragstart="drag(event)">
+            <img src="./characters/Mindthief.png" id="MH" height="80px" width="60px" draggable="true" ondragstart="drag(event)" class="portraits">
+            <img src="./characters/Cragheart.png" id="CH" height="80px" width="60px" draggable="true" ondragstart="drag(event)" class="portraits">
+            <img src="./characters/Scoundrel.png" id="SC" height="80px" width="60px" draggable="true" ondragstart="drag(event)" class="portraits">
+            <img src="./characters/Tinkerer.png" id= "TK" height="80px" width="60px" draggable="true" ondragstart="drag(event)" class="portraits">
         </div>
     </div>
 
     <div style="display:flex;">
-        <div id="initTower" style=" display:flex; flex-direction:column;">Init tower</div>
+        <div id="initTower" style=" display:flex; flex-direction:column; text-align:center">Initiative</div>
         <div style="display: flex; flex-direction: column; flex-grow:1;" id="monsters">
     </div>
 
@@ -100,8 +102,14 @@
             document.getElementById("scenarioId").parentNode.removeChild(document.getElementById("scenarioId"));
             let scenarioLevel = document.getElementById("levelId").value;
             document.getElementById("levelId").parentNode.removeChild(document.getElementById("levelId"));
-            document.getElementById("scenarioName").innerText = SCENARIO_DEFINITIONS[scenario].name;
-            document.getElementById("lvl").innerText = scenarioLevel + " lvl";
+            let scenarioName = SCENARIO_DEFINITIONS[scenario].name;
+            scenarioName = scenarioName.replace(/#/g, "");
+            document.getElementById("scenarioName").innerText = scenarioName;
+            let levelElement = document.getElementById("lvl");
+            levelElement.style.fontSize = null;
+            levelElement.innerText = "Level " + scenarioLevel;
+
+            document.getElementById("roundData").insertBefore(levelElement, document.getElementById("roundCounter"));
 
             for(let i = 0; i < SCENARIO_DEFINITIONS[scenario].decks.length; i++) {
                 let monster = {};
@@ -330,6 +338,7 @@
             if(Array.isArray(string)) {
                 for (let i = 0; i < string.length; i++) {
                     if(string[i] != null && string[i].replace != null) {
+                        result += "<br>";
                         result += string[i].replace(/%[^%]*%/gi, expand_macro);
                     }
                 }

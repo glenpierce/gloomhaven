@@ -298,7 +298,7 @@
             for(let activeMonster in activeMonsters) {
                 if (activeMonsters[activeMonster].name == monsters[monster].name) {
                     let cardData = monsters[monster].deck[Math.floor(Math.random() * monsters[monster].deck.length)];
-                    let cardElement = createCard(cardData);
+                    let cardElement = createCard(cardData, monsters[monster]);
                     monsters[monster].div.appendChild(cardElement);
                     monsters[monster].div.style.order = cardData[1];
                     addMonsterToInitTower(activeMonsters[activeMonster].name, cardData[1]);
@@ -323,10 +323,20 @@
         return array;
     }
 
-    function createCard(cardData) {
+    function createCard(cardData, monster) {
 
         let cardText = document.createElement("DIV");
-        cardText.innerHTML = parseString(cardData.toString());
+        let cardContent = parseString(cardData.toString());
+        if(cardContent.includes("Special 1")) {
+            console.log(monster.special1);
+            cardContent += parseString(monster.special1.toString());
+        }
+        if(cardContent.includes("Special 2")) {
+            console.log(monster.special2);
+            cardContent += parseString(monster.special2.toString());
+        }
+        cardText.innerHTML = cardContent;
+
         cardText.className = "card";
 
         // cardData.shuffle = data[0];

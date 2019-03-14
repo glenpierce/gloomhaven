@@ -25,6 +25,10 @@
         .portraits {
             padding: 20px 40px 10px 40px;
         }
+
+        .monsterInitChit{
+            text-align:left;
+        }
     </style>
 </head>
 <body style="background-color: black; font-family: 'Poppins', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight:600; color:white;">
@@ -74,7 +78,7 @@
     </div>
 
     <div style="display:flex;">
-        <div id="initTower" style=" display:flex; flex-direction:column; text-align:center">Initiative</div>
+        <div id="initTower" style=" display:flex; flex-direction:column; text-align:center;">Initiative</div>
         <div style="display: flex; flex-direction: column; flex-grow:1;" id="monsters">
     </div>
 
@@ -257,10 +261,10 @@
             newMonster.stats.health--;
             healthValue.innerText = newMonster.stats.health;
             if(newMonster.stats.health < 1) {
-                newMonster.parentNode.removeChild(newMonster);
                 let removedMonsterIndex = activeMonsters.indexOf(newMonster);
+                newMonster.parentNode.removeChild(newMonster);
                 if(removedMonsterIndex > -1) {
-                    activeMonsters.splice(removedMonsterIndex);
+                    activeMonsters.splice(removedMonsterIndex, 1);
                 }
 
             }
@@ -285,12 +289,9 @@
             oldCards[0].parentNode.removeChild(oldCards[0]);
         }
 
-        let initTower = document.getElementById("initTower");
-
-        for(let i = 1; i < initTower.childNodes.length; i++) {
-            if(!initTower.childNodes[i].classList.contains("portraits")) {
-                initTower.removeChild(initTower.childNodes[i]);
-            }
+        let oldMonsterInitChits = document.getElementsByClassName("monsterInitChit");
+        while(oldMonsterInitChits[0]) {
+            oldMonsterInitChits[0].parentNode.removeChild(oldMonsterInitChits[0]);
         }
 
         for(let monster in monsters) {
@@ -386,8 +387,9 @@
     function addMonsterToInitTower(name, init) {
         let initTower = document.getElementById("initTower");
         let monsterInitChit = document.createElement("DIV");
-        monsterInitChit.innerText = name;
+        monsterInitChit.innerText = init + " " + name;
         monsterInitChit.style.order = init;
+        monsterInitChit.className = "monsterInitChit";
         initTower.appendChild(monsterInitChit);
     }
 

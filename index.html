@@ -328,12 +328,10 @@
         let cardText = document.createElement("DIV");
         let cardContent = parseString(cardData.toString());
         if(cardContent.includes("Special 1")) {
-            console.log(monster.special1);
-            cardContent += parseString(monster.special1.toString());
+            cardContent += ("<br>" + parseString(monster.stats.special1.toString()));
         }
         if(cardContent.includes("Special 2")) {
-            console.log(monster.special2);
-            cardContent += parseString(monster.special2.toString());
+            cardContent += ("<br>" + parseString(monster.stats.special2.toString()));
         }
         cardText.innerHTML = cardContent;
 

@@ -79,10 +79,14 @@
             </div>
         </div>
         <div>
-            <img src="./characters/Mindthief.png" id="MH" height="80px" width="60px" draggable="true" onclick="assignInit(this)" ondragstart="drag(event)" class="portraits">
-            <img src="./characters/Cragheart.png" id="CH" height="80px" width="60px" draggable="true" onclick="assignInit(this)" ondragstart="drag(event)" class="portraits">
-            <img src="./characters/Scoundrel.png" id="SC" height="80px" width="60px" draggable="true" onclick="assignInit(this)" ondragstart="drag(event)" class="portraits">
-            <img src="./characters/Tinkerer.png" id= "TK" height="80px" width="60px" draggable="true" onclick="assignInit(this)" ondragstart="drag(event)" class="portraits">
+            <img src="./characters/Mindthief.png" id="MH" height="80px" width="60px" draggable="true" onclick="assignInit(this)" ondragstart="drag(event)" class="portraits"/>
+            <div name="MH"></div>
+            <img src="./characters/Cragheart.png" id="CH" height="80px" width="60px" draggable="true" onclick="assignInit(this)" ondragstart="drag(event)" class="portraits"/>
+            <div name="CH"></div>
+            <img src="./characters/Scoundrel.png" id="SC" height="80px" width="60px" draggable="true" onclick="assignInit(this)" ondragstart="drag(event)" class="portraits"/>
+            <div name="SC"></div>
+            <img src="./characters/Sawbones2.jpg" id="SB" height="80px" width="60px" draggable="true" onclick="assignInit(this)" ondragstart="drag(event)" class="portraits"/>
+            <div name="SB"></div>
         </div>
     </div>
 
@@ -223,7 +227,7 @@
         newMonsterMove.appendChild(moveIcon);
         let moveValue = document.createElement("DIV");
         moveValue.style.cssText = "font-size:40px; margin-left:5px;";
-        moveValue.innerText = newMonster.stats.attack;
+        moveValue.innerText = newMonster.stats.move;
         newMonsterMove.appendChild(moveValue);
         statsBlock.appendChild(newMonsterMove);
 
@@ -248,7 +252,7 @@
         newMonsterRange.appendChild(rangeIcon);
         let rangeValue = document.createElement("DIV");
         rangeValue.style.cssText = "font-size:40px; margin-left:5px;";
-        rangeValue.innerText = newMonster.stats.attack;
+        rangeValue.innerText = newMonster.stats.range;
         newMonsterRange.appendChild(rangeValue);
         statsBlock.appendChild(newMonsterRange);
 
@@ -399,6 +403,12 @@
     function assignInit(element) {
         let init = window.prompt(element.id, element.style.order);
         element.style.order = init;
+        if(init == 100) {
+            element.src = "./images/skull.jpg";
+            document.getElementsByName(element.id)[0].innerText = "";
+        } else {
+            document.getElementsByName(element.id)[0].innerText = init;
+        }
     }
 
     function addMonsterToInitTower(name, init) {
@@ -416,7 +426,7 @@
             characters = {
                 "level": 2,
                 "characters": ["Xavier", "Jen", "Amanda", "Tim"],
-                "portraits":["MH", "SC", "CH", "TK"]
+                "portraits":["MH", "SC", "CH", "SB"]
             };
             localStorage.setItem('characters', JSON.stringify(characters));
         }

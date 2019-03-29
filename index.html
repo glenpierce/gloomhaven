@@ -5,6 +5,15 @@
     <script type="text/javascript" src="./data/monster_stats.js"></script>
     <script type="text/javascript" src="./data/cards.js"></script>
     <script type="text/javascript" src="./data/macros.js"></script>
+    <link rel="manifest" href="manifest.json">
+    <script>
+        if('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js')
+                .then(function() {
+                    console.log('Service Worker Registered');
+                });
+        }
+    </script>
     <meta charset="UTF-8">
     <title>Gloomhaven DM</title>
     <style>

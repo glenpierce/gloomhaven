@@ -1,0 +1,13 @@
+{
+  "name": "Gloomhaven PWA",
+  "short_name": "Gloom",
+  "icons": [{
+    "src": "images/skull.jpg",
+    "sizes": "128x128",
+    "type": "image/jpg"
+  }],
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#000000"
+}

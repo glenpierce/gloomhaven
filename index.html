@@ -40,7 +40,7 @@
         }
     </style>
 </head>
-<body style="background-color: black; font-family: 'Poppins', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight:600; color:white;">
+<body style="background-color: black; font-family: 'Poppins', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight:600; color:white; user-select: none;">
     <div style="display:flex; justify-content:space-between;">
         <div style="display:flex;">
             <div style="display:flex;">
@@ -52,7 +52,14 @@
                 <div id="scenarioName" style="font-size:50px;">Scenario</div>
             </div>
         </div>
-        <img src="./images/gloomhavenLogo.jpg" height="50px" width="300px">
+        <div style="display: flex;">
+            <img src="./icons/earth.svg" height="50px" width="50px" style="filter: grayscale(100%);" onclick="updateGrayScale(this, '0%')">
+            <img src="./icons/air.svg" height="50px" width="50px" style="filter: grayscale(100%);" onclick="updateGrayScale(this, '0%')">
+            <img src="./icons/fire.svg" height="50px" width="50px" style="filter: grayscale(100%);" onclick="updateGrayScale(this, '0%')">
+            <img src="./icons/ice.svg" height="50px" width="50px" style="filter: grayscale(100%);" onclick="updateGrayScale(this, '0%')">
+            <img src="./icons/dark.svg" height="50px" width="50px" style="filter: grayscale(100%);" onclick="updateGrayScale(this, '0%')">
+            <img src="./icons/light.svg" height="50px" width="50px" style="filter: grayscale(100%);" onclick="updateGrayScale(this, '0%')">
+        </div>
         <img style="height:50px; width:50px; cursor:pointer;" src="./icons/cardsDrawIcon.svg" onclick="draw()"/>
         <div id="roundData" style="font-size:18px; line-height:1.4;">
             <div id="roundCounter"> Round 0 </div>
@@ -79,13 +86,13 @@
             </div>
         </div>
         <div>
-            <img src="./characters/Mindthief.png" id="MH" height="80px" width="60px" draggable="true" onclick="assignInit(this)" ondragstart="drag(event)" class="portraits"/>
+            <img src="./characters/Harrower-Plagueherald.jpg" id="MH" height="80px" width="60px" draggable="true" onclick="assignInit(this)" ondragstart="drag(event)" class="portraits"/>
             <div name="MH"></div>
-            <img src="./characters/Cragheart.png" id="CH" height="80px" width="60px" draggable="true" onclick="assignInit(this)" ondragstart="drag(event)" class="portraits"/>
+            <img src="./characters/sunkeeper.jpg" id="CH" height="80px" width="60px" draggable="true" onclick="assignInit(this)" ondragstart="drag(event)" class="portraits"/>
             <div name="CH"></div>
-            <img src="./characters/Scoundrel.png" id="SC" height="80px" width="60px" draggable="true" onclick="assignInit(this)" ondragstart="drag(event)" class="portraits"/>
+            <img src="./characters/nightshroud.jpg" id="SC" height="80px" width="60px" draggable="true" onclick="assignInit(this)" ondragstart="drag(event)" class="portraits"/>
             <div name="SC"></div>
-            <img src="./characters/Sawbones2.jpg" id="SB" height="80px" width="60px" draggable="true" onclick="assignInit(this)" ondragstart="drag(event)" class="portraits"/>
+            <img src="./characters/soothsayer.jpg" id="SB" height="80px" width="60px" draggable="true" onclick="assignInit(this)" ondragstart="drag(event)" class="portraits"/>
             <div name="SB"></div>
         </div>
     </div>
@@ -107,6 +114,10 @@
                 document.getElementById("initTower").appendChild(document.getElementById(getCharacters().portraits[i]))
             }
         }
+    };
+
+    const updateGrayScale = function(element, updateValue) {
+        element.style = "grayscale(" + updateValue + ")";
     };
 
     let monsters = [];
